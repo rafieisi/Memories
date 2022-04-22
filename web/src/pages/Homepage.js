@@ -10,13 +10,13 @@ import { useNavigate } from 'react-router-dom';
 import Loading from '../assets/loading.gif';
 
 
-export default function Hompage() {
+export default function Hompage(props) {
   const dispatch = useDispatch();
   const blogs = useSelector(state=>state.blogs.value);
   const [pgNumber, setPgNumber] = useState(useParams()["pageNumber"]);
   const [total, setStateTotal] = useState(1)
   const [loading,setLoading]=useState(true);
-  const [searchTerm, setSearch]=useState("all");
+  const [searchTerm, setSearch]=useState(props.searchTerm);
   const navigate = useNavigate()
   
   const blogsContainer = {
@@ -55,11 +55,6 @@ export default function Hompage() {
     res = await axios.get(`http://localhost:5000/pagination/${search}/getPage/${pgNumber}`)
     dispatch(setBlogs(res.data))
     setLoading(false);
-  }
-
-  const setSearchTerm = (search) => {
-    setSearch(search)
-    getPrimaryData(search)
   }
 
   useEffect(()=>{
