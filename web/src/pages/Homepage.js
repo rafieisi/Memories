@@ -59,7 +59,7 @@ export default function Hompage(props) {
 
   useEffect(()=>{
     getPrimaryData()
-  },[])
+  },[searchTerm])
 
   function changePage(event, value){
     navigate(`/blogs/${value}`)

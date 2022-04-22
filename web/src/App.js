@@ -12,13 +12,18 @@ import Header from './components/header.js';
 
 function App() {
   const [searchTerm,setSearchTerm] = useState("all")
+
+  const search = (newTerm) => {
+    setSearchTerm(newTerm)
+  }
+
   return (
     <div className="App">
-      <Header setSearchTerm={setSearchTerm}/>
+      <Header setSearchTerm={search}/>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/blogs/1"/>}/>
-          <Route path="/blogs/:pageNumber" element={<Homepage searchTerm={searchTerm}/>}/>
+          <Route path="/blogs/:pageNumber" element={<Homepage searchTerm={searchTerm} key={searchTerm}/>}/>
           <Route path="/addblog" element={<AddBlog/>}/>
           <Route path="/editblog/:id" element={<EditBlog/>}/>
           <Route path="/blog/:id" element={<Blog/>}/>
