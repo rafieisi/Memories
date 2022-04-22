@@ -1,0 +1,61 @@
+.card{
+    background-color: white;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    min-width: 500px;
+    padding:25px;
+    border-radius:50px;
+}
+
+.cardInput{
+    margin:20px;
+    margin-top:0px;
+}
+
+.cardInput input,
+.cardInput textarea{
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.cardInput label{
+    margin-left:10px;
+    font-weight:500;
+}
+
+.cardForm{
+    text-align: left !important;
+}
+
+.cardButton{
+    width:100%;
+    text-align:right;
+    padding-right:20px;
+    padding-top:20px;
+}
+
+@mixin formButton($color){
+    padding:10px 30px !important;
+    border-radius:20px !important;
+    border:1px solid $color !important;
+    color:$color !important;
+    background-color: transparent !important;
+    margin-left:10px !important;
+
+    &:hover{
+        transition: 0.5s !important;
+        color:white !important;
+        background-color: $color !important;
+    }
+}
+
+
+.cancelButton{
+    @include formButton(red)
+}
+
+.submitButton{
+    @include formButton(green)
+}

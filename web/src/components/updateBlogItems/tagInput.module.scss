@@ -1,0 +1,34 @@
+.container{
+    border:1px solid lightgrey;
+    border-radius: 20px;
+    padding:10px;
+    margin:20px;
+    position:relative
+}
+
+.container input{
+    border:none;
+}
+
+.container input:focus{
+    border:none;
+    outline:none;
+}
+
+.container button{
+    position:absolute;
+    bottom:5%;
+    right:2%;
+    border:1px solid blue;
+    border-radius:20px;
+    background-color: transparent;
+    color:blue;
+    padding:5px 15px;
+    font-size:80%;
+}
+
+.container button:hover{
+    transition:0.5s;
+    background-color: blue;
+    color:white;
+}
