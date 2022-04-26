@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 import BlogsReducer from './allBlogsState.js';
-import pageNumberReducer from './pageNumberState.js';
+import userReducer from './userState.js';
 
 export default combineReducers({
     blogs:BlogsReducer,
-    pageNumber:pageNumberReducer,
+    user:userReducer,
   })

@@ -2,7 +2,8 @@ import React from 'react';
 import Image from 'react-bootstrap/Image';
 import Blog from '../components/blogItems.js';
 import {useSelector} from 'react-redux';
-import { useParams } from "react-router-dom"
+import { useParams } from "react-router-dom";
+import Header from '../components/header.js';
 
 function SingleBlog(props) {
   const params = useParams();
@@ -26,9 +27,12 @@ function SingleBlog(props) {
     }
   }
   return (
-    <div style={blog}>
-      <Image src={selectedBlog.image} rounded style={blogImage}/>
-      <Blog blog={selectedBlog} shortened={false}/>
+    <div>
+      <Header isGeneral={true} setSearchTerm={()=>{}}/>
+      <div style={blog}>
+        <Image src={selectedBlog.image} rounded style={blogImage}/>
+        <Blog blog={selectedBlog} shortened={false}/>
+      </div>
     </div>
   )
 }

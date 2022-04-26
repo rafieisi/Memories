@@ -62,6 +62,11 @@ function Register() {
               Register
             </Button>
           </div>
+          <div>
+            <p>
+              have an account? <a href="/login">login</a>
+            </p>
+          </div>
         </Form>
     </div>
   )

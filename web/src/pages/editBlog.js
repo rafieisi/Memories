@@ -4,6 +4,7 @@ import UpdateBlogItems from '../components/updateBlogItems/updateBlogItems.js';
 import {useDispatch} from 'react-redux';
 import {editBlog, setBlogs} from '../states/allBlogsState';
 import axios from 'axios';
+import Header from '../components/header.js';
 
 function EditBlog(props) {
   
@@ -28,6 +29,7 @@ function EditBlog(props) {
 
   return (
     <div>
+      <Header isGeneral={true} setSearchTerm={()=>{}}/>
       {loading?<h1>"loading..."</h1>:<UpdateBlogItems
           blog={selectedBlog}
           pageTitle={"Edit Blog"}

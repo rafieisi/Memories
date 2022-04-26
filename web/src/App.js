@@ -7,23 +7,16 @@ import AddBlog from './pages/addBlog.js';
 import Blog from './pages/blogPage.js';
 import Register from './pages/register/register.js';
 import Login from './pages/login/login.js';
-import Header from './components/header.js';
 
 
 function App() {
-  const [searchTerm,setSearchTerm] = useState("all")
-
-  const search = (newTerm) => {
-    setSearchTerm(newTerm)
-  }
 
   return (
     <div className="App">
-      <Header setSearchTerm={search}/>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/blogs/1"/>}/>
-          <Route path="/blogs/:pageNumber" element={<Homepage searchTerm={searchTerm} key={searchTerm}/>}/>
+          <Route path="/blogs/:pageNumber" element={<Homepage/>}/>
           <Route path="/addblog" element={<AddBlog/>}/>
           <Route path="/editblog/:id" element={<EditBlog/>}/>
           <Route path="/blog/:id" element={<Blog/>}/>

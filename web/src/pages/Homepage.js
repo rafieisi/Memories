@@ -8,6 +8,7 @@ import {setBlogs} from '../states/allBlogsState.js';
 import Pagination from '../components/pagination.js';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../assets/loading.gif';
+import Header from '../components/header.js';
 
 
 export default function Hompage(props) {
@@ -16,7 +17,7 @@ export default function Hompage(props) {
   const [pgNumber, setPgNumber] = useState(useParams()["pageNumber"]);
   const [total, setStateTotal] = useState(1)
   const [loading,setLoading]=useState(true);
-  const [searchTerm, setSearch]=useState(props.searchTerm);
+  const [searchTerm, setSearch]=useState("all");
   const navigate = useNavigate()
   
   const blogsContainer = {
@@ -86,8 +87,11 @@ export default function Hompage(props) {
   }
 
   return (
-    <div style={blogsContainer}>
-      {pageContent}
+    <div>
+      <Header setSearchTerm={setSearch} isGeneral={false}/>
+      <div style={blogsContainer}>
+        {pageContent}
+      </div>
     </div>
   )
 }

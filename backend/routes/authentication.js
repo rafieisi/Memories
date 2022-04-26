@@ -51,7 +51,10 @@ app.post('/register', checkRegistration, (req,res)=>{
             //create the user in the mongodb
             user.password = hash
             let newUser = await userModel.create(user)
-            console.log(newUser)
+            if(newUser){
+                const token = createToken(user);
+                res.cookie("userToken",token,{maxAge:60*60*1000})
+            }
         }else{
             res.status(400).json("failed to created user")
         }
@@ -60,7 +63,7 @@ app.post('/register', checkRegistration, (req,res)=>{
 })
 
 app.post('/login',checkLogin,async (req,res)=>{
-    
+    console.log("login",req.body)
     const user = (await userModel.find({username:req.body.username}))[0];
     bcrypt.compare(req.body.password, user.password, (err, data)=>{
         if(data){
