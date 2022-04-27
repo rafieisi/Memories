@@ -5,7 +5,6 @@ import jwt_decode from 'jwt-decode';
 const parseJWTCookie = () => {
     let jwtCookie = Cookies.get("userToken");
     let decodedJWT = false;
-    console.log(jwtCookie)
     try{
         decodedJWT = jwt_decode(jwtCookie)
     }catch(error){
@@ -19,7 +18,7 @@ const logout = () => {
     return {isLoggedIn: false, username:"", _id:"", profilePicture:""}
 }
 
-const login = () => {
+export const login = () => {
     let decodedJWT = parseJWTCookie()
     if(decodedJWT){
         return {...decodedJWT, isLoggedIn:true}

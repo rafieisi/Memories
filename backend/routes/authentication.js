@@ -54,12 +54,14 @@ app.post('/register', checkRegistration, (req,res)=>{
             if(newUser){
                 const token = createToken(user);
                 res.cookie("userToken",token,{maxAge:60*60*1000})
+                res.json("user added!")
+            }else{
+                res.status(400).json("failed to created user")
             }
         }else{
             res.status(400).json("failed to created user")
         }
     })
-    res.json("user added!")
 })
 
 app.post('/login',checkLogin,async (req,res)=>{

@@ -1,11 +1,15 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import Logo from '../assets/logo.jpg';
 import SearchBar from '../components/searchBar/searchBar.js';
 import {useSelector, useDispatch} from 'react-redux';
 import { logOut } from '../states/userState';
+import Cookies from 'js-cookie';
+import { login } from '../states/userState';
 
 
 export default function Header(props) {
+    const [user,setUser] = useState(useSelector(state=>state.user))
+
     const header = {
         backgroundColor:"white",
         padding:"10px",
@@ -51,15 +55,25 @@ export default function Header(props) {
       }
 
     const dispatch = useDispatch();
-    const user = useSelector(state=>state.user)
 
     const logout = () => {
       dispatch(logOut())
     }
   
-  let buttons = <span>
-                  <a style={headerButton} href="/login">Login</a>
-                </span>
+  let buttons;
+  
+  if(!props.isGeneral){
+    buttons = <span>
+      <a style={headerButton} href="/login">Login</a>
+    </span>
+  }
+
+  useEffect(()=>{
+    if(user.isLoggedIn == false && Cookies.get("userToken")){
+      setUser(login())
+    }
+  },[])
+
   if(user.isLoggedIn){
     buttons = <span>
                 <span>
@@ -73,16 +87,16 @@ export default function Header(props) {
 
   let general;
   if(!props.isGeneral){
-    general = <span>
-      <SearchBar setSearchTerm={props.setSearchTerm}/>
-        {buttons}
-    </span>
+    general = <SearchBar setSearchTerm={props.setSearchTerm}/>
   }
 
   return (
     <div style={header}>
-        <img style={headerLogo} src={Logo}/>
-        {general}
+        <span>
+          <img style={headerLogo} src={Logo}/>
+          {general}
+        </span>
+        {buttons}
     </div>
   )
 }

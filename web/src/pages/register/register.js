@@ -3,7 +3,9 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from "react-router-dom";
 import RegisterStyle from './register.module.scss';
-import axios from 'axios'
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { logIn } from "../../states/userState.js"
 
 function Register() {
   
@@ -11,6 +13,7 @@ function Register() {
   const [password, setPassword] = useState("")
   const [profilePicture, setProfilePicture] = useState("")
   let navigate = useNavigate();
+  const dispatch = useDispatch();
   
   const submitForm = async (event) => {
         event.preventDefault()
@@ -22,9 +25,11 @@ function Register() {
           }
           
           let res = await axios.post("/authentication/register",newUser)
-          console.log(res)
-
-          navigate("/", { replace: true });
+          console.log(res.status == 200,res)
+          if(res.status == 200){
+            dispatch(logIn())
+            navigate("/", { replace: true });
+          }
         }
   }
 

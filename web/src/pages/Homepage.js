@@ -88,7 +88,7 @@ export default function Hompage(props) {
 
   return (
     <div>
-      <Header setSearchTerm={setSearch} isGeneral={false}/>
+      <Header setSearchTerm={setSearch} isGeneral={false} key={searchTerm}/>
       <div style={blogsContainer}>
         {pageContent}
       </div>
