@@ -25,7 +25,6 @@ function Register() {
           }
           
           let res = await axios.post("/authentication/register",newUser)
-          console.log(res.status == 200,res)
           if(res.status == 200){
             dispatch(logIn())
             navigate("/", { replace: true });

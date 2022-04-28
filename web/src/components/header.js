@@ -1,27 +1,31 @@
 import React,{useState,useEffect} from 'react';
 import Logo from '../assets/logo.jpg';
 import SearchBar from '../components/searchBar/searchBar.js';
-import {useSelector, useDispatch} from 'react-redux';
-import { logOut } from '../states/userState';
-import Cookies from 'js-cookie';
-import { login } from '../states/userState';
+import Dropdown from './dropdown';
+import { useNavigate } from 'react-router';
 
 
 export default function Header(props) {
-    const [user,setUser] = useState(useSelector(state=>state.user))
-
+    const [user,setUser] = useState(props.user)
+    let navigate = useNavigate();
     const header = {
         backgroundColor:"white",
         padding:"10px",
         display:"flex",
         alignItems:"center",
-        justifyContent:"space-around",
-        width:"100%"
+        justifyContent:"space-between",
+        position:"relative",
+        paddingLeft:"3%",
+        paddingRight:"3%"
       }
     
       const headerLogo = {
-        width:"300px",
-        marginLeft:"-10%"
+        position:"absolute",
+        top:"50%",
+        left:"50%",
+        transform:"translate(-50%,-50%)",
+        maxWidth:"350px",
+        cursor: "pointer"
       }
     
       const headerButton = {
@@ -39,26 +43,6 @@ export default function Header(props) {
         }
       }
 
-      const userImage = {
-        width:"50px",
-        height:"50px",
-        borderRadius:"100px",
-        border:"1px solid black",
-        padding:"2px"
-      }
-
-      const userUsername = {
-        display: "inline-block",
-        fontSize:"95%",
-        padding:"5px",
-        marginRight:"25px"
-      }
-
-    const dispatch = useDispatch();
-
-    const logout = () => {
-      dispatch(logOut())
-    }
   
   let buttons;
   
@@ -68,21 +52,8 @@ export default function Header(props) {
     </span>
   }
 
-  useEffect(()=>{
-    if(user.isLoggedIn == false && Cookies.get("userToken")){
-      setUser(login())
-    }
-  },[])
-
-  if(user.isLoggedIn){
-    buttons = <span>
-                <span>
-                  <img src={user.profilePicture} style={userImage}/>
-                  <h3 style={userUsername}>{user.username}</h3>
-                </span>
-                <a style={headerButton} href="/addBlog"><b>+</b> Add</a>
-                <a style={headerButton} href="/" onClick={logout}>Log Out</a>
-              </span>
+  if(user && user.isLoggedIn){
+    buttons = <Dropdown user={user}/>
   }
 
   let general;
@@ -92,11 +63,9 @@ export default function Header(props) {
 
   return (
     <div style={header}>
-        <span>
-          <img style={headerLogo} src={Logo}/>
-          {general}
-        </span>
-        {buttons}
+      <img style={headerLogo} src={Logo} onClick={()=>navigate("/",{replace:true})}/>
+      {general}
+      {buttons}
     </div>
   )
 }

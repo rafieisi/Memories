@@ -10,6 +10,7 @@ export default function TagInput(props) {
         event.preventDefault();
         if(tagRef.current.value.length) 
             props.addTag(tagRef.current.value)
+            tagRef.current.value = ""
     }
 
     const deleteOldTag = (tagName) => {

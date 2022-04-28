@@ -22,18 +22,74 @@ export const updateBlog = async(req,res) => {
 
 export const addLike = async(req,res) => {
     const blogId = req.params._id;
+    const userID = req.params.userID;
     await blogModel.findById(blogId,async (err,blog)=>{
-        let totalLikes = parseInt(blog.likes) + 1
-        await blogModel.findByIdAndUpdate(blogId,{likes:totalLikes})
-        res.status(200).send(`added a like to blog ${req.params._id}`)      
+        let blogLikes = [...blog.likes]
+        let blogDisklikes = [...blog.dislikes]
+
+        if(!blogLikes.includes(userID)){
+            blogLikes.push(userID)
+        }
+
+        if(blogDisklikes.includes(userID)){
+            let index = blogDisklikes.indexOf(userID);
+            blogDisklikes.splice(index,1)
+        }
+
+        await blogModel.findByIdAndUpdate(blogId,{likes:blogLikes, dislikes:blogDisklikes})
+        res.status(200).send(`user ${userID} added a like to blog ${req.params._id}`)      
+    }).clone()
+}
+
+export const removeLike = async(req,res) => {
+    const blogId = req.params._id;
+    const userID = req.params.userID;
+    await blogModel.findById(blogId,async (err,blog)=>{
+        let blogLikes = [...blog.likes]
+
+        if(blogLikes.includes(userID)){
+            let index = blogLikes.indexOf(userID);
+            blogLikes.splice(index,1)
+        }
+
+        await blogModel.findByIdAndUpdate(blogId,{likes:blogLikes})
+        res.status(200).send(`user ${userID} removed a like to blog ${req.params._id}`)      
     }).clone()
 }
 
 export const addDislike = async(req,res) => {
     const blogId = req.params._id;
+    const userID = req.params.userID;
     await blogModel.findById(blogId,async (err,blog)=>{
-        let totalDislikes = parseInt(blog.dislikes) + 1
-        await blogModel.findByIdAndUpdate(blogId,{dislikes:totalDislikes})
-        res.status(200).send(`added a like to blog ${req.params._id}`)      
+        let blogDislikes = [...blog.dislikes]
+        let blogLikes = [...blog.likes]
+
+        if(!blogDislikes.includes(userID)){
+            blogDislikes.push(userID)
+        }
+
+        if(blogLikes.includes(userID)){
+            let index = blogLikes.indexOf(userID);
+            blogLikes.splice(index,1)
+        }
+
+        await blogModel.findByIdAndUpdate(blogId,{dislikes:blogDislikes, likes: blogLikes})
+        res.status(200).send(`user ${userID} added a dislike to blog ${req.params._id}`)      
+    }).clone()
+}
+
+export const removeDislike = async(req,res) => {
+    const blogId = req.params._id;
+    const userID = req.params.userID;
+    await blogModel.findById(blogId,async (err,blog)=>{
+        let blogDisklikes = [...blog.dislikes]
+
+        if(blogDisklikes.includes(userID)){
+            let index = blogDisklikes.indexOf(userID);
+            blogDisklikes.splice(index,1)
+        }
+
+        await blogModel.findByIdAndUpdate(blogId,{dislikes:blogDisklikes})
+        res.status(200).send(`user ${userID} removed a dislike to blog ${req.params._id}`)      
     }).clone()
 }

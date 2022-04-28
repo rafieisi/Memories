@@ -5,8 +5,8 @@ const blogSchema = new mongoose.Schema({
     title: String,
     content: String,
     image: String,
-    likes: Number,
-    dislikes: Number,
+    likes: [String],
+    dislikes: [String],
     tags:{
         type:[String],
         default:["toronto","fun","letsdothis"]

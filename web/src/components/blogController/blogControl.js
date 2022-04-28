@@ -28,7 +28,7 @@ function BlogControl(props) {
     return (
         <div style={controlContainer}>
             <button className={blogControlStyles.editButton} style={buttonControllerStyles}>
-                <a href={`/editblog/${blog._id}`}>
+                <a href={`/${props.userID}/editblog/${blog._id}`}>
                     <BorderColorIcon />
                 </a>
             </button>

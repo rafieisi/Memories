@@ -13,7 +13,7 @@ const parseJWTCookie = () => {
     return decodedJWT
 }
 
-const logout = () => {
+export const logout = () => {
     Cookies.remove("userToken");
     return {isLoggedIn: false, username:"", _id:"", profilePicture:""}
 }

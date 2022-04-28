@@ -12,7 +12,7 @@ import Header from '../components/header.js';
 import blogsStyle from './pages.module.scss';
 
 
-export default function Hompage(props) {
+export default function PersonalBlogs(props) {
   const dispatch = useDispatch();
   const blogs = useSelector(state=>state.blogs.value);
   const [pgNumber, setPgNumber] = useState(useParams()["pageNumber"]);
@@ -20,13 +20,43 @@ export default function Hompage(props) {
   const [loading,setLoading]=useState(true);
   const [searchTerm, setSearch]=useState("all");
   const navigate = useNavigate()
+  
+  const blogsContainer = {
+    display:"flex",
+    flexWrap: "wrap",
+    justifyContent: "center"
+  }
+
+  const blogContainer = {
+    display:"inline-block",
+    width:"30%",
+    minWidth:"350px",
+    maxWidth:"500px",
+    margin:"10px",
+    borderRadius:"50px",
+    overflow:"hidden",
+    backgroundColor:"white",
+    position:"relative",
+    "& a":{
+      textDecoration:"none",
+      color:"black"
+    }
+  }
+
+  const blogImage = {
+    width:"100%",
+    maxHeight:"150px",
+    objectFit:"cover"
+  }
+  const params = useParams();
 
   async function getPrimaryData(search=searchTerm){
     setLoading(true);
-    let res = await axios.get(`http://localhost:5000/pagination/${search}/getNumberOfPages`)
+    let userId = params["id"];
+    let res = await axios.get(`http://localhost:5000/pagination/personal/${search}/${userId}/getNumberOfPages`)
     setStateTotal(res.data.count)
 
-    res = await axios.get(`http://localhost:5000/pagination/${search}/getPage/${pgNumber}`)
+    res = await axios.get(`http://localhost:5000/pagination/personal/${search}/${userId}/getPage/${pgNumber}`)
     dispatch(setBlogs(res.data))
     setLoading(false);
   }
@@ -36,7 +66,7 @@ export default function Hompage(props) {
   },[searchTerm])
 
   function changePage(event, value){
-    navigate(`/blogs/${value}`)
+    navigate(`/personalBlogs/${props.user._id}/${value}`)
     window.location.reload()
   }
 
@@ -46,12 +76,12 @@ export default function Hompage(props) {
                     <img src={Loading} width={400} height={400}/>
                   </div>
   }else{
-    pageContent = <div style={{margin:"auto",textAlign:"center"}}>
-                    <div>
+    pageContent = <div>
+                    <div style={{justifyContent:"left"}}>
                       {blogs.map(blog=>{
                         return <div className={blogsStyle.blogContainer}>
                           <img src={blog.image} className={blogsStyle.blogImage}/>
-                          <Blog blog={blog} shortened={true} editable={false} user={props.user}/>
+                          <Blog blog={blog} shortened={true} editable={true} user={props.user}/>
                         </div>
                       })}
                     </div>

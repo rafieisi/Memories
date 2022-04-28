@@ -23,6 +23,7 @@ function Login() {
             username: username,
             password: password
           }
+          console.log(newUser)
           let res = await axios.post("/authentication/login",newUser)
           if(res){
             dispatch(logIn())

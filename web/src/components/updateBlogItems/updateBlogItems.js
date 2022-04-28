@@ -15,7 +15,7 @@ function UpdateBlogItems(props) {
   
   const submitForm = (event) => {
         event.preventDefault()
-        if(title.length==0||content.length==0||image.length==0||tags.length==0)return
+        if(title.length==0||content.length==0||image.length==0)return
         let blog = {...props.blog}
         blog["title"] = title
         blog["content"] = content

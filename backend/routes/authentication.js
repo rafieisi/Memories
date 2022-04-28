@@ -65,7 +65,6 @@ app.post('/register', checkRegistration, (req,res)=>{
 })
 
 app.post('/login',checkLogin,async (req,res)=>{
-    console.log("login",req.body)
     const user = (await userModel.find({username:req.body.username}))[0];
     bcrypt.compare(req.body.password, user.password, (err, data)=>{
         if(data){

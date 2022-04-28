@@ -18,16 +18,14 @@ export const vertifyToken = (req,res,next) => {
         JWT.verify(userToken,"sinawashere", (err,decoded)=>{
             if(err){
                 res.status(400).json("failed to authenticate");
-                return;
-            }
-            
-            if(decoded){
+            }else if(decoded){
                 next();
             }
         })
     }catch(error){
         res.status(400).send("authentication error")
     }
+    return;
 }
 
 export const getUserId = (req)=>{
