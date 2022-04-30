@@ -8,12 +8,19 @@ import authentication from './routes/authentication.js';
 import cookieParser from 'cookie-parser';
 
 const app = express()
-const port = 5000
+const port = process.env.PORT || S5000
 const mongooseURL = "mongodb+srv://rafieisi:Sr110115118@cluster0.k8q9v.mongodb.net/mydb?retryWrites=true&w=majority"
 
 app.use(cookieParser())
 app.use(cors())
 app.use(bodyParser.json())
+
+if(process.env.NODE_ENV === 'production'){
+  app.use(express.static('build'));
+  app.get("*", (req,res) => {
+    req.sendFile(path.resolve(__dirname,"web","build","index.html"))
+  })
+}
 
 
 //mongoose
