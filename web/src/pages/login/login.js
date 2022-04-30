@@ -6,9 +6,8 @@ import LoginStyle from './login.module.scss';
 import { useDispatch } from 'react-redux';
 import { logIn } from "../../states/userState.js"
 import axios from 'axios';
-import Header from '../../components/header';
 
-function Login() {
+function Login(props) {
   
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -17,19 +16,21 @@ function Login() {
   const dispatch = useDispatch();
 
   const submitForm = async (event) => {
+        props.setLoading(true);
         event.preventDefault()
         if(username.length != 0 && password.length != 0){
           let newUser = {
             username: username,
             password: password
           }
-          console.log(newUser)
+
           let res = await axios.post("/authentication/login",newUser)
           if(res){
             dispatch(logIn())
             navigate("/",{replace:true});
           }
         }
+        props.setLoading(false);
   }
 
   const cancelForm = (event) => {
@@ -39,7 +40,6 @@ function Login() {
 
   return (
     <div>
-      <Header isGeneral={true} setSearchTerm={()=>{}}/>
       <div className={LoginStyle.card}>
         <h3>Login</h3>
           <Form  onSubmit={submitForm}>

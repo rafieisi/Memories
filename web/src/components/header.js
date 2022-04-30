@@ -1,19 +1,18 @@
 import React,{useState,useEffect} from 'react';
 import Logo from '../assets/logo.jpg';
-import SearchBar from '../components/searchBar/searchBar.js';
 import Dropdown from './dropdown';
 import { useNavigate } from 'react-router';
+import { logOut } from '../states/userState';
 
 
 export default function Header(props) {
-    const [user,setUser] = useState(props.user)
     let navigate = useNavigate();
     const header = {
         backgroundColor:"white",
         padding:"10px",
         display:"flex",
         alignItems:"center",
-        justifyContent:"space-between",
+        justifyContent:"right",
         position:"relative",
         paddingLeft:"3%",
         paddingRight:"3%"
@@ -43,28 +42,25 @@ export default function Header(props) {
         }
       }
 
+      const loginButton ={
+        display:"flex",
+        height:"50px",
+        alignItems:"center",
+        justifyContent:"center"
+      }
+
   
-  let buttons;
-  
-  if(!props.isGeneral){
-    buttons = <span>
+  let buttons = <span style={loginButton}>
       <a style={headerButton} href="/login">Login</a>
     </span>
-  }
 
-  if(user && user.isLoggedIn){
-    buttons = <Dropdown user={user}/>
-  }
-
-  let general;
-  if(!props.isGeneral){
-    general = <SearchBar setSearchTerm={props.setSearchTerm}/>
+  if(props.user && props.user.isLoggedIn){
+    buttons = <Dropdown user={props.user} logOutUser={props.logOutUser}/>
   }
 
   return (
     <div style={header}>
       <img style={headerLogo} src={Logo} onClick={()=>navigate("/",{replace:true})}/>
-      {general}
       {buttons}
     </div>
   )

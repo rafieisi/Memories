@@ -40,7 +40,7 @@ const blogs = createSlice({
                 dislikes.splice(index,1)
             }
             
-            axios.post(`http://localhost:5000/blogs/${action.payload._id}/addLike/${action.payload.userID}`)
+            axios.post(`http://localhost:5000/blogs/${action.payload.blog._id}/addLike/${action.payload.userID}`)
         },
         addBlogDislike:(state,action)=>{
             const index = state.value.findIndex(blog=>blog._id==action.payload.blog._id)
@@ -57,7 +57,7 @@ const blogs = createSlice({
                 likes.splice(index,1)
             }
 
-            axios.post(`http://localhost:5000/blogs/${action.payload._id}/addDislike/${action.payload.userID}`)
+            axios.post(`http://localhost:5000/blogs/${action.payload.blog._id}/addDislike/${action.payload.userID}`)
         },
         editBlog:(state,action)=>{
             const index = state.value.findIndex(blog=>blog._id==action.payload._id)

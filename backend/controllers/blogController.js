@@ -5,6 +5,11 @@ export const getAllBlogs = async (req, res) => {
     res.send(blogs)
 }
 
+export const getBlog = async (req, res) => {
+    const blog = await blogModel.find({_id:req.params._id})
+    res.send(blog[0])
+}
+
 export const saveBlog = async(req,res) => {
     const newBlog = await blogModel.create(req.body)
     res.status(200).send("blog added!")

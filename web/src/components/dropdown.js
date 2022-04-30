@@ -6,7 +6,6 @@ import MenuItem from '@mui/material/MenuItem';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Divider from '@mui/material/Divider';
 import {useDispatch} from 'react-redux';
-import { logOut } from '../states/userState';
 import {Link} from "react-router-dom";
 import AddIcon from '@mui/icons-material/Add';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
@@ -90,9 +89,8 @@ export default function Dropdown(props) {
     color:"black"
   }
 
-  const dispatch = useDispatch();
   const logout = () => {
-    dispatch(logOut())
+    props.logOutUser();
   }
 
   return (
@@ -120,7 +118,8 @@ export default function Dropdown(props) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem component={Link} to={`/personalBlogs/${props.user._id}/1`} >
+        <MenuItem component={Link} to={`/personalBlogs/${props.user._id}/1?searchTerm=all`} 
+                  onClick={()=>{window.location.href = `/personalBlogs/${props.user._id}/1?searchTerm=all`;}}>
           <PersonOutlineIcon />
           Personal Blogs
         </MenuItem>

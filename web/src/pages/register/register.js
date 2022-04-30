@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { logIn } from "../../states/userState.js"
 
-function Register() {
+function Register(props) {
   
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -16,6 +16,7 @@ function Register() {
   const dispatch = useDispatch();
   
   const submitForm = async (event) => {
+        props.setLoading(true);
         event.preventDefault()
         if(username.length != 0 && password.length != 0 && profilePicture.length != 0){
           let newUser = {
@@ -30,6 +31,7 @@ function Register() {
             navigate("/", { replace: true });
           }
         }
+        props.setLoading(false);
   }
 
   const cancelForm = (event) => {

@@ -1,9 +1,10 @@
 import express from 'express';
-import { removeLike, removeDislike, getAllBlogs, saveBlog, deleteBlog, updateBlog, addLike, addDislike } from '../controllers/blogController.js';
+import { removeLike, removeDislike, getAllBlogs, saveBlog, deleteBlog, updateBlog, addLike, addDislike, getBlog } from '../controllers/blogController.js';
 
 
 const app = express.Router();
 app.get('/', getAllBlogs)
+app.get('/getBlog/:_id', getBlog)
 app.post('/newBlog', saveBlog)
 app.delete('/deleteBlog/:_id',deleteBlog)
 app.put('/updateBlog/:_id',updateBlog)

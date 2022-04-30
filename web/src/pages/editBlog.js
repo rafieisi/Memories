@@ -29,7 +29,6 @@ function EditBlog(props) {
 
   return (
     <div>
-      <Header isGeneral={true} setSearchTerm={()=>{}}/>
       {loading?<h1>"loading..."</h1>:<UpdateBlogItems
           blog={selectedBlog}
           pageTitle={"Edit Blog"}

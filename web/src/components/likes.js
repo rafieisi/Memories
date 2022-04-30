@@ -16,6 +16,7 @@ export default function Likes(props) {
   }
 
   const handleLiking = () => {
+    if(!props.userID)return
     if(!likes.includes(props.userID)){
       dispatch(addBlogLike({blog:props.blog, userID: props.userID}));
       setLikes(prevState => {
@@ -36,6 +37,7 @@ export default function Likes(props) {
   }
 
   const handleDisliking = () => {
+    if(!props.userID)return
     if(!dislikes.includes(props.userID)){
       setDislikes(prevState => {
         let stateDislikes = [...prevState];

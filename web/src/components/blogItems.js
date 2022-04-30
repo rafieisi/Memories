@@ -18,7 +18,7 @@ export default function Blog(props) {
         editControl = <BlogControl blog={blog} userID={user._id}/>
     }
     return (
-        <div>
+        <div style={{cursor:"pointer"}}>
             <div style={blogInformation}>
                 <h2>{blog.title}</h2>
                 <div style={{color:"grey"}}>{blogTags}</div>

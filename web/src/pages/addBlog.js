@@ -10,7 +10,6 @@ function AddBlog(props) {
     const userID = useParams()["userID"];
     return (
         <div>
-            <Header isGeneral={true} setSearchTerm={()=>{}}/>
             <UpdateBlogItems
                 blog={{title:"",content:"",image:"",tags:[]}}
                 pageTitle={"Add Blog"}

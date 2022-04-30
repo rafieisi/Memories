@@ -1,40 +1,55 @@
-import React from 'react';
-import Image from 'react-bootstrap/Image';
-import Blog from '../components/blogItems.js';
-import {useSelector} from 'react-redux';
-import { useParams } from "react-router-dom";
-import Header from '../components/header.js';
+import react, {useEffect} from 'react';
+import { useState } from 'react';
+import BlogControl from '../components/blogController/blogControl';
+import Likes from '../components/likes';
+import modalStyle from './blogModel.module.scss';
+import {useParams} from 'react-router-dom';
+import axios from 'axios';
 
-function SingleBlog(props) {
-  const params = useParams();
-  const id  = params.id;
-  const blogs = useSelector(state => state.blogs.value);
-  const selectedBlog = blogs.filter(blog=>blog._id==id)[0]
 
-  const blogImage = {
-    maxWidth:"60%",
-    borderRadius:"50px"
+export default function BlogPage(props) {
+  const [user,setUser] = useState(props.user);
+  const [blog,setBlog] = useState({image:"",title:"",content:"", likes:[], dislikes:[]});
+  const [loading, setLoading] = useState(true);
+  const {blogID} = useParams();
+  
+  useEffect(()=>{
+    async function dummy(){
+      setLoading(true);
+      let res = await axios.get(`/blogs/getBlog/${blogID}`)
+      setBlog(res.data);
+      setLoading(false);
+    }
+    dummy()
+  },[])
+
+
+  const blogInformation = {
+      padding:"10px 15px",
+      paddingTop:"15px"
+    }
+    
+  
+
+  let editControl;
+  if(props.user && props.user.isLoggedIn && user._id==blog.userID){
+      editControl = <BlogControl blog={blog} userID={user._id}  positionNormal={true}/>
   }
 
-  const blog = {
-    width:"80%",
-    margin:"auto",
-    marginTop:"50px",
-
-    "& a":{
-      textDecoration:"none",
-      color:"black"
-    }
+  let blogTags;
+  if(!loading){
+    blogTags = blog.tags.map(tag=><span>#{tag} </span>)
   }
   return (
-    <div>
-      <Header isGeneral={true} setSearchTerm={()=>{}}/>
-      <div style={blog}>
-        <Image src={selectedBlog.image} rounded style={blogImage}/>
-        <Blog blog={selectedBlog} shortened={false}/>
+    <div className={modalStyle.modalContainer}>
+      <img src={blog.image} className={modalStyle.modalImage}/>
+      <div style={blogInformation}>
+        <h2>{blog.title}</h2>
+        <div style={{color:"grey"}}>{blogTags}</div>
+        {editControl} 
+        <p>{blog.content}</p>
       </div>
+      <Likes blog={blog} userID={user._id}/>
     </div>
-  )
+  );
 }
-
-export default SingleBlog

@@ -10,25 +10,33 @@ import { useNavigate } from 'react-router-dom';
 import Loading from '../assets/loading.gif';
 import blogsStyle from './pages.module.scss';
 import SearchBar from '../components/searchBar/searchBar.js';
+import { useSearchParams } from "react-router-dom";
 
 
-export default function PersonalBlogs(props) {
+export default function BlogsPage(props) {
+    const baseURL = props.baseURL;
+    const navigateURL = props.navigateURL;
+
   const dispatch = useDispatch();
   const blogs = useSelector(state=>state.blogs.value);
   const [pgNumber, setPgNumber] = useState(useParams()["pageNumber"]);
   const [total, setStateTotal] = useState(1)
-  const [loading,setLoading]=useState(true);
-  const [searchTerm, setSearch]=useState("all");
-  const navigate = useNavigate()
-  const params = useParams();
+  const [loading,setLoading] = useState(true);
+  let [searchParams, setSearchParams] = useSearchParams()
+  const [searchTerm, setSearch] = useState(searchParams.get("searchTerm")||"all");
+  const navigate = useNavigate();
+
 
   async function getPrimaryData(search=searchTerm){
+    let axiosURL = `${baseURL}/${search}`;
+    if(props.isPersonal){
+      axiosURL = `${baseURL}/${search}/${props.user._id}`;
+    }
     setLoading(true);
-    let userId = params["id"];
-    let res = await axios.get(`http://localhost:5000/pagination/personal/${search}/${userId}/getNumberOfPages`)
+    let res = await axios.get(`${axiosURL}/getNumberOfPages`)
     setStateTotal(res.data.count)
 
-    res = await axios.get(`http://localhost:5000/pagination/personal/${search}/${userId}/getPage/${pgNumber}`)
+    res = await axios.get(`${axiosURL}/getPage/${pgNumber}`)
     dispatch(setBlogs(res.data))
     setLoading(false);
   }
@@ -37,9 +45,14 @@ export default function PersonalBlogs(props) {
     getPrimaryData()
   },[searchTerm])
 
-  function changePage(event, value){
-    navigate(`/personalBlogs/${props.user._id}/${value}`)
+  function changePage(event, value, term="all"){
+    navigate(`${navigateURL}/${value}?searchTerm=${term}`)
     window.location.reload()
+  }
+
+
+  const setSearchTerm = (term) => {
+    changePage(null,1,term)
   }
 
   let pageContent;
@@ -48,12 +61,12 @@ export default function PersonalBlogs(props) {
                     <img src={Loading} width={400} height={400}/>
                   </div>
   }else{
-    pageContent = <div>
-                    <div style={{justifyContent:"left"}}>
+    pageContent = <div style={{margin:"auto",textAlign:"center"}}>
+                    <div>
                       {blogs.map(blog=>{
-                        return <div className={blogsStyle.blogContainer}>
+                        return <div className={blogsStyle.blogContainer} onClick={()=>{navigate(`/blog/${blog._id}`)}}>
                           <img src={blog.image} className={blogsStyle.blogImage}/>
-                          <Blog blog={blog} shortened={true} editable={true} user={props.user}/>
+                          <Blog blog={blog} shortened={true} editable={false} user={props.user}/>
                         </div>
                       })}
                     </div>
@@ -63,7 +76,7 @@ export default function PersonalBlogs(props) {
 
   return (
     <div>
-      <SearchBar setSearchTerm={setSearch} key={searchTerm}/>
+      <SearchBar setSearchTerm={setSearchTerm} key={searchTerm}/>
       <div className={blogsStyle.blogsContainer}>
         {pageContent}
       </div>

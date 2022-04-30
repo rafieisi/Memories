@@ -15,6 +15,8 @@ function BlogControl(props) {
         right: "3%"
     }
 
+    const normalStyle = {margin:"5px"}
+
     const buttonControllerStyles = {
         backgroundColor: "white",
         border: "none",
@@ -26,7 +28,7 @@ function BlogControl(props) {
 
     const blog = props.blog;
     return (
-        <div style={controlContainer}>
+        <div style={props.positionNormal?normalStyle:controlContainer}>
             <button className={blogControlStyles.editButton} style={buttonControllerStyles}>
                 <a href={`/${props.userID}/editblog/${blog._id}`}>
                     <BorderColorIcon />

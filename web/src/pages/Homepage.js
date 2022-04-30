@@ -8,8 +8,9 @@ import {setBlogs} from '../states/allBlogsState.js';
 import Pagination from '../components/pagination.js';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../assets/loading.gif';
-import Header from '../components/header.js';
 import blogsStyle from './pages.module.scss';
+import SearchBar from '../components/searchBar/searchBar.js';
+import { useSearchParams } from "react-router-dom";
 
 
 export default function Hompage(props) {
@@ -18,8 +19,10 @@ export default function Hompage(props) {
   const [pgNumber, setPgNumber] = useState(useParams()["pageNumber"]);
   const [total, setStateTotal] = useState(1)
   const [loading,setLoading]=useState(true);
-  const [searchTerm, setSearch]=useState("all");
-  const navigate = useNavigate()
+  let [searchParams, setSearchParams] = useSearchParams()
+  const [searchTerm, setSearch]=useState(searchParams.get("searchTerm")||"all");
+  const navigate = useNavigate();
+
 
   async function getPrimaryData(search=searchTerm){
     setLoading(true);
@@ -35,9 +38,14 @@ export default function Hompage(props) {
     getPrimaryData()
   },[searchTerm])
 
-  function changePage(event, value){
-    navigate(`/blogs/${value}`)
+  function changePage(event, value, term="all"){
+    navigate(`/blogs/${value}?searchTerm=${term}`)
     window.location.reload()
+  }
+
+
+  const setSearchTerm = (term) => {
+    changePage(null,1,term)
   }
 
   let pageContent;
@@ -49,7 +57,7 @@ export default function Hompage(props) {
     pageContent = <div style={{margin:"auto",textAlign:"center"}}>
                     <div>
                       {blogs.map(blog=>{
-                        return <div className={blogsStyle.blogContainer}>
+                        return <div className={blogsStyle.blogContainer} onClick={()=>{navigate(`/blog/${blog._id}`)}}>
                           <img src={blog.image} className={blogsStyle.blogImage}/>
                           <Blog blog={blog} shortened={true} editable={false} user={props.user}/>
                         </div>
@@ -61,7 +69,7 @@ export default function Hompage(props) {
 
   return (
     <div>
-      <Header setSearchTerm={setSearch} isGeneral={false} key={searchTerm} user={props.user}/>
+      <SearchBar setSearchTerm={setSearchTerm} key={searchTerm}/>
       <div className={blogsStyle.blogsContainer}>
         {pageContent}
       </div>
